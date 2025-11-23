@@ -1127,47 +1127,40 @@ class ObjectWmiQueryTask( SAObjectTaskBase ):
     
     def format_csv_table( self, csv_text: str ) -> str:
         html_output = []
-        html_space  = '&nbsp;'
-    
-        f = StringIO( csv_text )
-        reader = list( csv.reader( f ) )
-    
+        html_space = '&nbsp;'
+
+        reader = list( csv.reader( StringIO( csv_text ) ) )
+
         if not reader:
-            return HcTheme.console().foreground( 'No data available' )
-    
-        headers = reader[ 0 ]
-        rows    = reader[ 1: ]
-    
+            return HcTheme.console().foreground( 'No data available', bold = True )
+
+        headers = reader[ 0  ]
+        rows    = reader[ 1: ] 
+
         col_widths = [ len( h ) for h in headers ]
-    
+
         for row in rows:
             if len( row ) > len( col_widths ):
                 col_widths.extend( [ 0 ] * ( len( row ) - len( col_widths ) ) )
-            for i, col in enumerate( row ):
+            for i, col in enumerate(row):
                 col_widths[ i ] = max( col_widths[ i ], len( col ) )
-    
-        def truncate( val, width ):
-            if len( val ) > width:
-                return val[ :width - 3 ] + '...'
-            return val
-    
+
         header_line = ''
         for i, h in enumerate( headers ):
-            header_line += f'{ truncate( h, col_widths[ i ] ):<{ col_widths[ i ] } }  '
-        html_output.append( HcTheme.console().foreground( header_line.replace( ' ', html_space ), bold=True ) )
-    
+            header_line += f'{h:<{col_widths[ i ]}}  '
+        html_output.append( HcTheme.console().foreground( header_line.replace( ' ', html_space ), bold = True ) )
+
         divider_line = ''
         for w in col_widths:
             divider_line += f'{"-" * w}  '
         html_output.append( HcTheme.console().foreground( divider_line.replace( ' ', html_space ) ) )
-    
+
         for row in rows:
             row_line = ''
             for i, col in enumerate( row ):
-                col_text  = truncate( col, col_widths[ i ] ) if col else ''
-                row_line += f'{ col_text:<{ col_widths[ i ] } }  '
+                row_line += f'{col:<{col_widths[ i ]}}  '
             html_output.append( HcTheme.console().foreground( row_line.replace( ' ', html_space ) ) )
-    
+
         return '<br>'.join( html_output )
 
 
