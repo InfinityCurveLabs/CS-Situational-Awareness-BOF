@@ -480,6 +480,14 @@ class ObjectLdapsearchTask( SAObjectTaskBase ):
             "    ldapsearch (&(samAccountType=805306368)(userAccountControl:1.2.840.113556.1.4.803:=4194304))\n\n"
             " - query for passwords stored with reversible encryption:\n"
             "    ldapsearch (&(objectClass=user)(objectCategory=user)(userAccountControl:1.2.840.113556.1.4.803:=128))\n"
+            " - query domain controllers:\n"
+            "    ldapsearch (&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=8192))\n\n"
+            " - query all domain admins:\n"
+            "    ldapsearch (&(objectCategory=group)(name=Domain Admins))\n\n"
+            " - query password policy:\n"
+            "    ldapsearch (&(objectClass=msDS-PasswordSettings))\n\n"
+            " - query password policy:\n"
+            "    ldapsearch (&(objectClass=msDS-PasswordSettings))\n\n"
         )
 
         parser.add_argument( 'QUERY', nargs='*', type=str, help="path to directory to list files" )
