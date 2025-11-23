@@ -487,7 +487,7 @@ class ObjectLdapsearchTask( SAObjectTaskBase ):
             " - query password policy:\n"
             "    ldapsearch (&(objectClass=msDS-PasswordSettings))\n\n"
             " - query password policy:\n"
-            "    ldapsearch (&(objectClass=msDS-PasswordSettings))\n\n"
+            "    ldapsearch (&(objectCategory=person)(objectClass=user)(samaccountname=<USERNAME>))\n\n"
         )
 
         parser.add_argument( 'QUERY', nargs='*', type=str, help="path to directory to list files" )
