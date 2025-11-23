@@ -479,7 +479,7 @@ class ObjectLdapsearchTask( SAObjectTaskBase ):
             " - query for AS-REP Roastable:\n"
             "    ldapsearch (&(samAccountType=805306368)(userAccountControl:1.2.840.113556.1.4.803:=4194304))\n\n"
             " - query for passwords stored with reversible encryption:\n"
-            "    ldapsearch (&(objectClass=user)(objectCategory=user)(userAccountControl:1.2.840.113556.1.4.803:=128))\n"
+            "    ldapsearch (&(objectClass=user)(objectCategory=user)(userAccountControl:1.2.840.113556.1.4.803:=128))\n\n"
             " - query domain controllers:\n"
             "    ldapsearch (&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=8192))\n\n"
             " - query all domain admins:\n"
