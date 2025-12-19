@@ -11,8 +11,8 @@ CURRENT_DIR  = dirname( __file__ )
 CACHE_OBJECT = False
 
 ##
-## this are some util functions and the SAObjectTaskBase 
-## base object which every SA object command will inherit 
+## this are some util functions and the SAObjectTaskBase
+## base object which every SA object command will inherit
 ##
 
 def file_read( path: str ) -> bytes:
@@ -33,31 +33,31 @@ class SAObjectTaskBase( HcKaineCommand ):
         self.bof_path = f"{dirname(__file__)}/{name}/{name}.{self.agent().agent_meta()['arch']}.o"
         self.key_id   = f'obj-sa-handle.{name}'
 
-    async def execute( self, args ):    
+    async def execute( self, args ):
         return await self.execute_object()
 
     async def execute_object( self, *args, argv: bytes = None, description = '' ):
         if exists( self.bof_path ) is False:
             self.log_error( f"object file not found: {self.bof_path}" )
             return
-        
+
         #
-        # execute the already loaded object file if we 
-        # have it loaded + CACHE_OBJECT is still enabled 
+        # execute the already loaded object file if we
+        # have it loaded + CACHE_OBJECT is still enabled
         if self.key_id in self.agent().key_store and CACHE_OBJECT:
-            task = self.agent().object_invoke( 
-                self.agent().key_store[ self.key_id ], 
-                'go', 
-                *args,
-                object_argv  = argv, 
-                flag_capture = self.capture_output 
-            )
-        else:
-            task = self.agent().object_execute( 
-                file_read( self.bof_path ), 
+            task = self.agent().object_invoke(
+                self.agent().key_store[ self.key_id ],
                 'go',
                 *args,
-                object_argv  = argv, 
+                object_argv  = argv,
+                flag_capture = self.capture_output
+            )
+        else:
+            task = self.agent().object_execute(
+                file_read( self.bof_path ),
+                'go',
+                *args,
+                object_argv  = argv,
                 flag_cache   = CACHE_OBJECT,
                 flag_capture = self.capture_output
             )
@@ -66,8 +66,8 @@ class SAObjectTaskBase( HcKaineCommand ):
         message = description
 
         #
-        # this displays the informational message of the task being created 
-        # by either using the given execute_object description or use the 
+        # this displays the informational message of the task being created
+        # by either using the given execute_object description or use the
         # registered command descritpion
         if len( message ) == 0:
             message = self.description()
@@ -79,14 +79,14 @@ class SAObjectTaskBase( HcKaineCommand ):
         self.log_info( f'({uuid}) {message}' )
 
         #
-        # now invoke and issue the task to the agent and wait for it to finish 
+        # now invoke and issue the task to the agent and wait for it to finish
         try:
             result = await task.result()
 
             if CACHE_OBJECT and self.key_id not in self.agent().key_store:
                 #
                 # looks like we are not in the store meaning that the previously send
-                # out task should be cachhing the object into memory and return us the handle   
+                # out task should be cachhing the object into memory and return us the handle
                 handle, output = result
                 message        = f'(handle: 0x{handle:x})'
 
@@ -97,19 +97,19 @@ class SAObjectTaskBase( HcKaineCommand ):
                 message = ''
                 handle, output = 0, ''
 
-                if len( result ) == 1: 
+                if len( result ) == 1:
                     output = result
                 elif len( result ) == 2:
                     handle, output = result
             if len( output ) > 0 and self.capture_output:
                 self.process_output( output, task.task_uuid() )
-            elif self.capture_output: 
+            elif self.capture_output:
                 self.log_warn( f'{self.command()} has sent no output back!', task_id = task.task_uuid() )
         except Exception as e:
             self.log_error( f"({uuid}) failed to execute {self.command()}: {e}", task_id = task.task_uuid() )
             print( traceback.format_exc() )
             if str( e ) == 'STATUS_NOT_FOUND':
-                self.log_warn( f'removing key store entry of {self.command()}' ) 
+                self.log_warn( f'removing key store entry of {self.command()}' )
                 del self.agent().key_store[ self.key_id ]
             return
 
@@ -120,11 +120,11 @@ class SAObjectTaskBase( HcKaineCommand ):
         self.log_raw( output.decode(), task_id = task_id )
         return
 
-@KnRegisterCommand( command     = 'sa-objects', 
-                    description = 'control situational awareness object files', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'sa-objects',
+                    description = 'control situational awareness object files',
+                    group       = 'Situational Awareness Commands' )
 class SAObjectControlTask( HcKaineCommand ):
-    
+
     def __init__( self, *args, **kwargs ):
         super().__init__( *args, **kwargs )
         return
@@ -145,9 +145,9 @@ class SAObjectControlTask( HcKaineCommand ):
         sub_parsers.add_parser( 'enable-caching', add_help=False, help='enable the caching of the situational awareness files' )
         sub_parsers.add_parser( 'disable-caching', add_help=False, help='disable the caching of the situational awareness files' )
         sub_parsers.add_parser( 'status', add_help=False, help='show current caching status and the loaded object files' )
-        
+
         return parser
-    
+
     async def execute( self, args ):
         global CACHE_OBJECT
 
@@ -156,14 +156,14 @@ class SAObjectControlTask( HcKaineCommand ):
 
         elif args._command == 'enable-caching':
             CACHE_OBJECT = True
-            self.log_success( 'enabled situational awareness object file caching' ) 
+            self.log_success( 'enabled situational awareness object file caching' )
 
         elif args._command == 'disable-caching':
             CACHE_OBJECT = False
             self.log_success( 'disasbled situational awareness object file caching' )
 
         elif args._command == 'status':
-            
+
             information = (
                 '\n'
                 f'  Caching: {CACHE_OBJECT}\n'
@@ -173,121 +173,121 @@ class SAObjectControlTask( HcKaineCommand ):
             self.log_raw( information )
 
 ##
-## object file commands 
-## 
+## object file commands
+##
 
-@KnRegisterCommand( command     = 'whoami', 
-                    description = 'list whoami /all', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'whoami',
+                    description = 'list whoami /all',
+                    group       = 'Situational Awareness Commands' )
 class ObjectWhoamiTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'ipconfig', 
-                    description = 'list IPv4 address, hostname, and DNS server', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'ipconfig',
+                    description = 'list IPv4 address, hostname, and DNS server',
+                    group       = 'Situational Awareness Commands' )
 class ObjectIpconfigTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'uptime', 
-                    description = 'list system boot time and how long it has been running', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'uptime',
+                    description = 'list system boot time and how long it has been running',
+                    group       = 'Situational Awareness Commands' )
 class ObjectUptimeTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'arp', 
-                    description = 'list ARP table', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'arp',
+                    description = 'list ARP table',
+                    group       = 'Situational Awareness Commands' )
 class ObjectArpListTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'driversigs', 
-                    description = 'enumerate installed services imagepaths to check the signing cert against known AV/EDR vendors', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'driversigs',
+                    description = 'enumerate installed services imagepaths to check the signing cert against known AV/EDR vendors',
+                    group       = 'Situational Awareness Commands' )
 class ObjectDriversigsTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'env', 
-                    description = 'list process environment variables', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'env',
+                    description = 'list process environment variables',
+                    group       = 'Situational Awareness Commands' )
 class ObjectEnvListTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'netstat', 
-                    description = 'list active TCP and UDP IPv4 connections', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'netstat',
+                    description = 'list active TCP and UDP IPv4 connections',
+                    group       = 'Situational Awareness Commands' )
 class ObjectNetstatTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'locale', 
-                    description = 'list system locale language, locale ID, date, time, and country', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'locale',
+                    description = 'list system locale language, locale ID, date, time, and country',
+                    group       = 'Situational Awareness Commands' )
 class ObjectLocaleTask( SAObjectTaskBase ):
     pass
 
-@KnRegisterCommand( command     = 'get_dpapi_system', 
-                    description = 'Print DPAPI_SYSTEM and boot key if able', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'get_dpapi_system',
+                    description = 'Print DPAPI_SYSTEM and boot key if able',
+                    group       = 'Situational Awareness Commands' )
 class ObjectListPipesTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'listdns', 
-                    description = 'list DNS cache entries. attempt to query and resolve each', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'listdns',
+                    description = 'list DNS cache entries. attempt to query and resolve each',
+                    group       = 'Situational Awareness Commands' )
 class ObjectListDnsTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'list_firewall_rules', 
-                    description = 'list windows firewall rules', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'list_firewall_rules',
+                    description = 'list windows firewall rules',
+                    group       = 'Situational Awareness Commands' )
 class ObjectListFirewallRulesTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'useridletime', 
-                    description = 'displays how long the user has been idle', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'useridletime',
+                    description = 'displays how long the user has been idle',
+                    group       = 'Situational Awareness Commands' )
 class ObjectUseridletimeTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'resources', 
-                    description = 'list memory usage and available disk space on the primary hard drive', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'resources',
+                    description = 'list memory usage and available disk space on the primary hard drive',
+                    group       = 'Situational Awareness Commands' )
 class ObjectResourcestimeTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser._add_help = False
 
 
-@KnRegisterCommand( command     = 'aadjoininfo', 
-                    description = 'retrieve azure AD/Entra ID join information', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'aadjoininfo',
+                    description = 'retrieve azure AD/Entra ID join information',
+                    group       = 'Situational Awareness Commands' )
 class ObjectAadJoinInfoTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'adcs_enum', 
-                    description = 'Enumerates CAs and templates in the AD using Win32 functions', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'adcs_enum',
+                    description = 'Enumerates CAs and templates in the AD using Win32 functions',
+                    group       = 'Situational Awareness Commands' )
 class ObjectAdcsEnumTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.epilog = (
             "   This command enumerates the certificate authorities and certificate\n"
             "   types (templates) in the Acitive Directory Certificate Services using\n"
-            "   undocumented Win32 functions. It displays basic information as well\n" 
-            "   as the CA cert, flags, permissions, and similar information for the\n" 
+            "   undocumented Win32 functions. It displays basic information as well\n"
+            "   as the CA cert, flags, permissions, and similar information for the\n"
             "   templates.\n"
         )
 
@@ -295,38 +295,38 @@ class ObjectAdcsEnumTask( SAObjectTaskBase ):
 
     async def execute( self, args ):
         return await self.execute_object( args.DOMAIN, description = 'Enumerates CAs and templates in the AD using Win32 functions' )
-    
 
-@KnRegisterCommand( command     = 'adcs_enum_com', 
-                    description = 'Enumerates CAs and templates in the AD using ICertConfig COM object', 
-                    group       = 'Situatinal Awareness Commands' )
+
+@KnRegisterCommand( command     = 'adcs_enum_com',
+                    description = 'Enumerates CAs and templates in the AD using ICertConfig COM object',
+                    group       = 'Situational Awareness Commands' )
 class ObjectAdcsEnumComTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.epilog = (
             "   This command enumerates the certificate authorities and certificate\n"
-            "   types (templates) in the Acitive Directory Certificate Services using\n" 
+            "   types (templates) in the Acitive Directory Certificate Services using\n"
             "   the ICertConfig, ICertRequest, and IX509CertificateTemplate COM \n"
-            "   objects. It displays basic information as well as the CA cert, flags,\n" 
+            "   objects. It displays basic information as well as the CA cert, flags,\n"
             "   permissions, and similar information for the templates.\n"
         )
 
     async def execute( self, args ):
         return await self.execute_object( description = 'Enumerates CAs and templates in the AD using ICertConfig COM object' )
-    
 
-@KnRegisterCommand( command     = 'adcs_enum_com2', 
-                    description = 'Enumerates CAs and templates in the AD using IX509PolicyServerListManager COM object', 
-                    group       = 'Situatinal Awareness Commands' )
+
+@KnRegisterCommand( command     = 'adcs_enum_com2',
+                    description = 'Enumerates CAs and templates in the AD using IX509PolicyServerListManager COM object',
+                    group       = 'Situational Awareness Commands' )
 class ObjectAdcsEnumComTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.epilog = (
             "   This command enumerates the certificate authorities and certificate \n"
-            "   types (templates) in the Acitive Directory Certificate Services using\n" 
-            "   the IX509PolicyServerListManager, IX509PolicyServerUrl,\n" 
+            "   types (templates) in the Acitive Directory Certificate Services using\n"
+            "   the IX509PolicyServerListManager, IX509PolicyServerUrl,\n"
             "   IX509EnrollmentPolicyServer, ICertificationAuthority, and \n"
             "   IX509CertificateTemplate COM objects. It displays basic information as\n"
             "   well as the CA cert, flags, permissions, and similar information for\n"
@@ -337,11 +337,11 @@ class ObjectAdcsEnumComTask( SAObjectTaskBase ):
         return await self.execute_object( description = 'Enumerates CAs and templates in the AD using IX509PolicyServerListManager COM object' )
 
 
-@KnRegisterCommand( command     = 'vssenum', 
-                    description = 'Enumerate snapshots on a remote machine', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'vssenum',
+                    description = 'Enumerate snapshots on a remote machine',
+                    group       = 'Situational Awareness Commands' )
 class ObjectVssEnumTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.epilog = (
@@ -354,18 +354,18 @@ class ObjectVssEnumTask( SAObjectTaskBase ):
         parser.add_argument( 'SHARENAME', nargs='?', default='C$', type=str, help="sharename (default: C$)" )
 
     async def execute( self, args ):
-        return await self.execute_object( 
-            self.agent().to_unicode( args.HOSTNAME ), 
-            self.agent().to_unicode( args.SHARENAME ), 
-            
-            description = 'Enumerate snapshots on a remote machine' )
-    
+        return await self.execute_object(
+            self.agent().to_unicode( args.HOSTNAME ),
+            self.agent().to_unicode( args.SHARENAME ),
 
-@KnRegisterCommand( command     = 'get_password_policy', 
-                    description = 'gets a server or DC\'s configured password policy', 
-                    group       = 'Situatinal Awareness Commands' )
+            description = 'Enumerate snapshots on a remote machine' )
+
+
+@KnRegisterCommand( command     = 'get_password_policy',
+                    description = 'gets a server or DC\'s configured password policy',
+                    group       = 'Situational Awareness Commands' )
 class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.epilog = (
@@ -377,17 +377,17 @@ class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
         parser.add_argument( 'HOSTNAME', type=str, help="target hostname" )
 
     async def execute( self, args ):
-        return await self.execute_object( 
-            self.agent().to_unicode( args.HOSTNAME ), 
-            
-            description = 'gets a server or DC\'s configured password policy' )
-    
+        return await self.execute_object(
+            self.agent().to_unicode( args.HOSTNAME ),
 
-@KnRegisterCommand( command     = 'probe', 
-                    description = 'Check if a port is open', 
-                    group       = 'Situatinal Awareness Commands' )
+            description = 'gets a server or DC\'s configured password policy' )
+
+
+@KnRegisterCommand( command     = 'probe',
+                    description = 'Check if a port is open',
+                    group       = 'Situational Awareness Commands' )
 class ObjectProbeTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.add_argument( 'HOST', type=str, help="host to check" )
@@ -399,37 +399,37 @@ class ObjectProbeTask( SAObjectTaskBase ):
             self.log_error( 'port number {args.PORT} is invalid: is out of range' )
             return
 
-        return await self.execute_object( 
+        return await self.execute_object(
             args.HOST,
-            args.PORT, 
-            
+            args.PORT,
+
             description = 'gets a server or DC\'s configured password policy' )
 
 
-@KnRegisterCommand( command     = 'listmods', 
-                    description = 'list process modules', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'listmods',
+                    description = 'list process modules',
+                    group       = 'Situational Awareness Commands' )
 class ObjectListModulesTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.add_argument( 'PID', nargs='?', default=0, type=int, help="process id to list modules" )
 
     async def execute( self, args ):
         description = 'list current process modules'
-        if args.PID != 0: 
+        if args.PID != 0:
             description = f'list process modules of {args.PID}'
-            
+
         return await self.execute_object( args.PID, description = description )
 
 
-@KnRegisterCommand( command     = 'cacls', 
-                    description = 'list user permissions for the specified file', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'cacls',
+                    description = 'list user permissions for the specified file',
+                    group       = 'Situational Awareness Commands' )
 class ObjectCaclsTask( SAObjectTaskBase ):
-    
+
     @staticmethod
-    def arguments( parser ): 
+    def arguments( parser ):
         parser.epilog = (
             "example usage:\n"
             "  cacls C:\\\\windows\\\\system32\\\\notepad.exe\n"
@@ -443,13 +443,13 @@ class ObjectCaclsTask( SAObjectTaskBase ):
         return await self.execute_object( self.agent().to_unicode( args.PATH ), description = f'list user permissions for {args.PATH}' )
 
 
-@KnRegisterCommand( command     = 'dir', 
-                    description = 'list files in a directory', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'dir',
+                    description = 'list files in a directory',
+                    group       = 'Situational Awareness Commands' )
 class ObjectDirTask( SAObjectTaskBase ):
-    
+
     @staticmethod
-    def arguments( parser ): 
+    def arguments( parser ):
         parser.epilog = (
             "example usage:\n"
             "  dir C:\\\\windows\\\\system32\n"
@@ -463,13 +463,13 @@ class ObjectDirTask( SAObjectTaskBase ):
         return await self.execute_object( self.agent().acp_encode( args.PATH ), args.recursive, description = f'list files in {args.PATH}' )
 
 
-@KnRegisterCommand( command     = 'ldapsearch', 
-                    description = 'execute ldap queries', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'ldapsearch',
+                    description = 'execute ldap queries',
+                    group       = 'Situational Awareness Commands' )
 class ObjectLdapsearchTask( SAObjectTaskBase ):
-    
+
     @staticmethod
-    def arguments( parser ): 
+    def arguments( parser ):
         parser.epilog = (
             "Important - To add in ACLs so Bloodhound can draw relationships between objects (see external BofHound tool), add nTSecurityDescriptor in the attributes list, like so:\n"
             "    ldapsearch <query> --attributes *,ntsecuritydescriptor ...\n\n"
@@ -497,33 +497,33 @@ class ObjectLdapsearchTask( SAObjectTaskBase ):
         parser.add_argument( '--hostname', default='', type=str, help='hostname or IP to perform the LDAP connection on (default: automatic DC resolution)' )
         parser.add_argument( '--dn', default='', type=str, help='the LDAP query base' )
         parser.add_argument( '--ldaps', action='store_true', help='use of ldaps' )
-        
+
     async def execute( self, args ):
-        scope = 3 # default is subtree 
+        scope = 3 # default is subtree
         query = ' '.join( args.QUERY )
         if args.scope == 'base':
             scope = 1
         elif args.scope == 'level':
             scope = 2
 
-        return await self.execute_object( 
-            query, 
+        return await self.execute_object(
+            query,
             args.attributes,
             args.count,
             scope,
-            args.hostname, 
+            args.hostname,
             args.dn,
             args.ldaps,
-            
+
             description = f'execute ldap query: {query}' )
-    
-@KnRegisterCommand( command     = 'nonpagedldapsearch', 
-                    description = 'execute ldap queries (non-paged)', 
-                    group       = 'Situatinal Awareness Commands' )
+
+@KnRegisterCommand( command     = 'nonpagedldapsearch',
+                    description = 'execute ldap queries (non-paged)',
+                    group       = 'Situational Awareness Commands' )
 class ObjectLdapsearchTask( SAObjectTaskBase ):
-    
+
     @staticmethod
-    def arguments( parser ): 
+    def arguments( parser ):
         parser.epilog = (
             "Important - To add in ACLs so Bloodhound can draw relationships between objects (see external BofHound tool), add nTSecurityDescriptor in the attributes list, like so:\n"
             "    nonpagedldapsearch <query> --attributes *,ntsecuritydescriptor ...\n\n"
@@ -541,37 +541,37 @@ class ObjectLdapsearchTask( SAObjectTaskBase ):
         parser.add_argument( '--count', default=0, type=int, help='the result max size (default: None)' )
         parser.add_argument( '--hostname', default='', type=str, help='hostname or IP to perform the LDAP connection on (default: automatic DC resolution)' )
         parser.add_argument( '--domain', default='', type=str, help='the LDAP query base' )
-        
+
     async def execute( self, args ):
         query = ' '.join( args.QUERY )
 
-        return await self.execute_object( 
-            query, 
+        return await self.execute_object(
+            query,
             args.attributes,
             args.count,
-            args.hostname, 
+            args.hostname,
             args.domain,
-            
+
             description = f'execute ldap query: {query}' )
 
-@KnRegisterCommand( command     = 'netloggedon', 
-                    description = 'Returns users logged on the local (or a remote) machine - administrative rights needed', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'netloggedon',
+                    description = 'Returns users logged on the local (or a remote) machine - administrative rights needed',
+                    group       = 'Situational Awareness Commands' )
 class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.add_argument( 'COMPUTERNAME', nargs='?', default='', type=str, help="computername" )
 
     async def execute( self, args ):
         return await self.execute_object( args.COMPUTERNAME )
-    
 
-@KnRegisterCommand( command     = 'netview', 
-                    description = 'lists local workstations and servers', 
-                    group       = 'Situatinal Awareness Commands' )
+
+@KnRegisterCommand( command     = 'netview',
+                    description = 'lists local workstations and servers',
+                    group       = 'Situational Awareness Commands' )
 class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.epilog = (
@@ -582,19 +582,19 @@ class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
 
     async def execute( self, args ):
         return await self.execute_object( self.agent().to_unicode( args.DOMAIN ) )
-    
-@KnRegisterCommand( command     = 'notepad', 
-                    description = 'Searching for open notepad windows', 
-                    group       = 'Situatinal Awareness Commands' )
+
+@KnRegisterCommand( command     = 'notepad',
+                    description = 'Searching for open notepad windows',
+                    group       = 'Situational Awareness Commands' )
 class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
     pass
 
 
-@KnRegisterCommand( command     = 'netshares', 
-                    description = 'list shares on local or remote computer', 
-                    group       = 'Situatinal Awareness Commands' )
+@KnRegisterCommand( command     = 'netshares',
+                    description = 'list shares on local or remote computer',
+                    group       = 'Situational Awareness Commands' )
 class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.add_argument( 'COMPUTERNAME', type=str, default='' )
@@ -602,14 +602,14 @@ class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
 
     async def execute( self, args ):
         return await self.execute_object( self.agent().to_unicode( args.COMPUTERNAME ), args.admin )
-    
-@KnRegisterCommand( 
-    command     = 'netgroup', 
-    description = 'list the groups of the current domain or list members of a specified group', 
-    group       = 'Situatinal Awareness Commands' 
+
+@KnRegisterCommand(
+    command     = 'netgroup',
+    description = 'list the groups of the current domain or list members of a specified group',
+    group       = 'Situational Awareness Commands'
 )
 class ObjectNetGroupTask( SAObjectTaskBase ):
-    
+
     @staticmethod
     def arguments( parser ):
         parser.epilog = (
@@ -622,16 +622,16 @@ class ObjectNetGroupTask( SAObjectTaskBase ):
         )
 
         parser.add_argument(
-            '--domain', 
-            type=str, 
-            default='', 
+            '--domain',
+            type=str,
+            default='',
             help='optional domain name'
         )
 
         parser.add_argument(
-            '--group', 
-            type=str, 
-            default='', 
+            '--group',
+            type=str,
+            default='',
             help='optional group name (if provided, lists group members)'
         )
 
@@ -644,7 +644,7 @@ class ObjectNetGroupTask( SAObjectTaskBase ):
             if args.domain == '':
                 description = 'list groups for current domain'
         else:
-            type_value = 1 
+            type_value = 1
             group      = args.group
             description = f"list members of group '{group}'"
             if args.domain != '':
@@ -1048,7 +1048,7 @@ class ObjectRegQueryTask( SAObjectTaskBase ):
             argv        = argv,
             description = description
         )
-    
+
 
 @KnRegisterCommand(
     command     = 'wmi_query',
@@ -1126,13 +1126,13 @@ class ObjectWmiQueryTask( SAObjectTaskBase ):
             argv        = argv,
             description = description
         )
-    
-    # NOTE: it is possible to capture the output and format it into a "pretty" table (please disable 'Console Wrap Text' in the client GUI) 
+
+    # NOTE: it is possible to capture the output and format it into a "pretty" table (please disable 'Console Wrap Text' in the client GUI)
     #
     def process_output( self, output, task_id ):
         self.log_info( 'received wmi query output:', task_id = task_id )
         self.log_raw( '<br>' + self.format_csv_table( output.decode() ) + '<br>', is_html = True, task_id = task_id )
-    
+
     def format_csv_table( self, csv_text: str ) -> str:
         html_output = []
         html_space = '&nbsp;'
@@ -1143,7 +1143,7 @@ class ObjectWmiQueryTask( SAObjectTaskBase ):
             return HcTheme.console().foreground( 'No data available', bold = True )
 
         headers = reader[ 0  ]
-        rows    = reader[ 1: ] 
+        rows    = reader[ 1: ]
 
         col_widths = [ len( h ) for h in headers ]
 
@@ -1293,7 +1293,7 @@ class ObjectEnumFilterDriverTask(SAObjectTaskBase):
             argv        = bof_pack('z', system),
             description = description
         )
-    
+
 
 @KnRegisterCommand(
     command     = 'netuptime',
@@ -1326,7 +1326,7 @@ class ObjectNetUptimeTask(SAObjectTaskBase):
             argv        = bof_pack('Zi', name, 0),
             description = description
         )
-   
+
 
 @KnRegisterCommand(
     command     = 'nettime',
@@ -1362,7 +1362,7 @@ class ObjectNetTimeTask(SAObjectTaskBase):
             argv        = bof_pack('Z', name),
             description = description
         )
-    
+
 
 @KnRegisterCommand(
     command     = 'regsession',
@@ -1456,25 +1456,56 @@ class ObjectSha256Task(SAObjectTaskBase):
             description = description
         )
 
+@KnRegisterCommand(
+    command     = 'md5',
+    description = 'Returns the md5 hash of the selected file for integrity checks',
+    group       = 'Situational Awareness Commands'
+)
+class ObjectSha256Task(SAObjectTaskBase):
+
+    @staticmethod
+    def arguments(parser):
+        parser.epilog = (
+            "Usage:\n"
+            "  md5 <filename>\n\n"
+            "Summary:\n"
+            "  Computes the md5 hash of the specified file."
+        )
+
+        parser.add_argument(
+            'filename',
+            type=str,
+            help='Path to the file to hash'
+        )
+
+    async def execute(self, args):
+        filename    = args.filename
+        description = f"Computing md5 hash for file '{filename}'"
+
+        return await self.execute_object(
+            argv        = bof_pack('z', filename),
+            description = description
+        )
+
 
 ##
-## Thses are just examples and documentation on how to fully use and ulize some features 
+## Thses are just examples and documentation on how to fully use and ulize some features
 ##
 
 #
-# NOTE: example on how to capture a object file output 
+# NOTE: example on how to capture a object file output
 #       and process them further in process_output!
-#  
+#
 # @KnRegisterCommand( command = 'cacls', description = 'list user permissions for the specified file' )
-# class ObjectCaclsTask( SAObjectTaskBase ):    
+# class ObjectCaclsTask( SAObjectTaskBase ):
 #     def __init__(self, *args, **kwargs):
 #         super().__init__(*args, **kwargs)
 #         #
-#         # allow us to capture the object file output for further processing! 
+#         # allow us to capture the object file output for further processing!
 #         self.capture_output = True
 
 #     @staticmethod
-#     def arguments( parser ): 
+#     def arguments( parser ):
 #         parser.epilog = (
 #             "example usage:\n"
 #             "  cacls C:\\\\windows\\\\system32\\\\notepad.exe\n"
