@@ -1492,24 +1492,25 @@ class ObjectMd5Task(SAObjectTaskBase):
     description = 'list visible windows',
     group       = 'Situational Awareness Commands'
 )
-class ObjectWindowListTask(SAObjectTaskBase):
+class ObjectWindowListTask( SAObjectTaskBase ):
 
     @staticmethod
-    def arguments(parser):
+    def arguments( parser ):
         parser.epilog = (
             "Usage:\n"
-            "  md5 <filename>\n\n"
+            "  windowlist\n"
+            "  windowlist --all\n"
             "Synopsis: List windows visible on the users desktop\n"
             "          optionally specify \"--all\" as an argument to see every possible window."
         )
 
         parser.add_argument(
             '--all',
-            action='store_true',
-            help='see every possible window'
+            action = 'store_true',
+            help   = 'see every possible window'
         )
 
-    async def execute(self, args):
+    async def execute( self, args ):
         description = f"list visible windows"
         if args.all:
             description = f"list every possible visible window"
