@@ -1461,7 +1461,7 @@ class ObjectSha256Task(SAObjectTaskBase):
     description = 'Returns the md5 hash of the selected file for integrity checks',
     group       = 'Situational Awareness Commands'
 )
-class ObjectSha256Task(SAObjectTaskBase):
+class ObjectMd5Task(SAObjectTaskBase):
 
     @staticmethod
     def arguments(parser):
@@ -1487,6 +1487,37 @@ class ObjectSha256Task(SAObjectTaskBase):
             description = description
         )
 
+@KnRegisterCommand(
+    command     = 'windowlist',
+    description = 'list visible windows',
+    group       = 'Situational Awareness Commands'
+)
+class ObjectWindowListTask(SAObjectTaskBase):
+
+    @staticmethod
+    def arguments(parser):
+        parser.epilog = (
+            "Usage:\n"
+            "  md5 <filename>\n\n"
+            "Synopsis: List windows visible on the users desktop\n"
+            "          optionally specify \"--all\" as an argument to see every possible window."
+        )
+
+        parser.add_argument(
+            '--all',
+            action='store_true',
+            help='see every possible window'
+        )
+
+    async def execute(self, args):
+        description = f"list visible windows"
+        if args.all:
+            description = f"list every possible visible window"
+
+        return await self.execute_object(
+            argv        = bof_pack( 'i', 1 if args.all else 0 ),
+            description = description
+        )
 
 ##
 ## Thses are just examples and documentation on how to fully use and ulize some features
