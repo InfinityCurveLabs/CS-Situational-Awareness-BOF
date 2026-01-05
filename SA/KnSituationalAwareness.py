@@ -319,7 +319,7 @@ class ObjectAdcsEnumComTask( SAObjectTaskBase ):
 @KnRegisterCommand( command     = 'adcs_enum_com2',
                     description = 'Enumerates CAs and templates in the AD using IX509PolicyServerListManager COM object',
                     group       = 'Situational Awareness Commands' )
-class ObjectAdcsEnumComTask( SAObjectTaskBase ):
+class ObjectAdcsEnumCom2Task( SAObjectTaskBase ):
 
     @staticmethod
     def arguments( parser ):
@@ -520,7 +520,7 @@ class ObjectLdapsearchTask( SAObjectTaskBase ):
 @KnRegisterCommand( command     = 'nonpagedldapsearch',
                     description = 'execute ldap queries (non-paged)',
                     group       = 'Situational Awareness Commands' )
-class ObjectLdapsearchTask( SAObjectTaskBase ):
+class ObjectNonePagedLdapsearchTask( SAObjectTaskBase ):
 
     @staticmethod
     def arguments( parser ):
@@ -557,7 +557,7 @@ class ObjectLdapsearchTask( SAObjectTaskBase ):
 @KnRegisterCommand( command     = 'netloggedon',
                     description = 'Returns users logged on the local (or a remote) machine - administrative rights needed',
                     group       = 'Situational Awareness Commands' )
-class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
+class ObjectNetloggedonTask( SAObjectTaskBase ):
 
     @staticmethod
     def arguments( parser ):
@@ -570,7 +570,7 @@ class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
 @KnRegisterCommand( command     = 'netview',
                     description = 'lists local workstations and servers',
                     group       = 'Situational Awareness Commands' )
-class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
+class ObjectNetViewTask( SAObjectTaskBase ):
 
     @staticmethod
     def arguments( parser ):
@@ -586,14 +586,14 @@ class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
 @KnRegisterCommand( command     = 'notepad',
                     description = 'Searching for open notepad windows',
                     group       = 'Situational Awareness Commands' )
-class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
+class ObjectNotepadTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'netshares',
                     description = 'list shares on local or remote computer',
                     group       = 'Situational Awareness Commands' )
-class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
+class ObjectNetSharesTask( SAObjectTaskBase ):
 
     @staticmethod
     def arguments( parser ):
