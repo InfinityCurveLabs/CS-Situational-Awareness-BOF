@@ -122,7 +122,8 @@ class SAObjectTaskBase( HcKaineCommand ):
 
 @KnRegisterCommand( command     = 'sa-objects',
                     description = 'control situational awareness object files',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class SAObjectControlTask( HcKaineCommand ):
 
     def __init__( self, *args, **kwargs ):
@@ -178,90 +179,103 @@ class SAObjectControlTask( HcKaineCommand ):
 
 @KnRegisterCommand( command     = 'whoami',
                     description = 'list whoami /all',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectWhoamiTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'ipconfig',
                     description = 'list IPv4 address, hostname, and DNS server',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectIpconfigTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'uptime',
                     description = 'list system boot time and how long it has been running',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectUptimeTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'arp',
                     description = 'list ARP table',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectArpListTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'driversigs',
                     description = 'enumerate installed services imagepaths to check the signing cert against known AV/EDR vendors',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectDriversigsTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'env',
                     description = 'list process environment variables',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectEnvListTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'netstat',
                     description = 'list active TCP and UDP IPv4 connections',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectNetstatTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'locale',
                     description = 'list system locale language, locale ID, date, time, and country',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectLocaleTask( SAObjectTaskBase ):
     pass
 
 @KnRegisterCommand( command     = 'get_dpapi_system',
                     description = 'Print DPAPI_SYSTEM and boot key if able',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectListPipesTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'listdns',
                     description = 'list DNS cache entries. attempt to query and resolve each',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectListDnsTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'list_firewall_rules',
                     description = 'list windows firewall rules',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectListFirewallRulesTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'useridletime',
                     description = 'displays how long the user has been idle',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectUseridletimeTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'resources',
                     description = 'list memory usage and available disk space on the primary hard drive',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectResourcestimeTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -271,14 +285,16 @@ class ObjectResourcestimeTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'aadjoininfo',
                     description = 'retrieve azure AD/Entra ID join information',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectAadJoinInfoTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'adcs_enum',
                     description = 'Enumerates CAs and templates in the AD using Win32 functions',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectAdcsEnumTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -299,7 +315,8 @@ class ObjectAdcsEnumTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'adcs_enum_com',
                     description = 'Enumerates CAs and templates in the AD using ICertConfig COM object',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectAdcsEnumComTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -318,7 +335,8 @@ class ObjectAdcsEnumComTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'adcs_enum_com2',
                     description = 'Enumerates CAs and templates in the AD using IX509PolicyServerListManager COM object',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectAdcsEnumCom2Task( SAObjectTaskBase ):
 
     @staticmethod
@@ -339,7 +357,8 @@ class ObjectAdcsEnumCom2Task( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'vssenum',
                     description = 'Enumerate snapshots on a remote machine',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectVssEnumTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -363,7 +382,8 @@ class ObjectVssEnumTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'get_password_policy',
                     description = 'gets a server or DC\'s configured password policy',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -385,7 +405,8 @@ class ObjectGetPasswordPolicyTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'probe',
                     description = 'Check if a port is open',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectProbeTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -408,7 +429,8 @@ class ObjectProbeTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'listmods',
                     description = 'list process modules',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectListModulesTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -425,7 +447,8 @@ class ObjectListModulesTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'cacls',
                     description = 'list user permissions for the specified file',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectCaclsTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -445,7 +468,8 @@ class ObjectCaclsTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'dir',
                     description = 'list files in a directory',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectDirTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -465,7 +489,8 @@ class ObjectDirTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'ldapsearch',
                     description = 'execute ldap queries',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectLdapsearchTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -519,7 +544,8 @@ class ObjectLdapsearchTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'nonpagedldapsearch',
                     description = 'execute ldap queries (non-paged)',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectNonePagedLdapsearchTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -556,7 +582,8 @@ class ObjectNonePagedLdapsearchTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'netloggedon',
                     description = 'Returns users logged on the local (or a remote) machine - administrative rights needed',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectNetloggedonTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -569,7 +596,8 @@ class ObjectNetloggedonTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'netview',
                     description = 'lists local workstations and servers',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectNetViewTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -585,14 +613,16 @@ class ObjectNetViewTask( SAObjectTaskBase ):
 
 @KnRegisterCommand( command     = 'notepad',
                     description = 'Searching for open notepad windows',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectNotepadTask( SAObjectTaskBase ):
     pass
 
 
 @KnRegisterCommand( command     = 'netshares',
                     description = 'list shares on local or remote computer',
-                    group       = 'Situational Awareness Commands' )
+                    group       = 'Situational Awareness Commands',
+                    platform    = 'Windows' )
 class ObjectNetSharesTask( SAObjectTaskBase ):
 
     @staticmethod
@@ -606,7 +636,8 @@ class ObjectNetSharesTask( SAObjectTaskBase ):
 @KnRegisterCommand(
     command     = 'netgroup',
     description = 'list the groups of the current domain or list members of a specified group',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectNetGroupTask( SAObjectTaskBase ):
 
@@ -661,7 +692,8 @@ class ObjectNetGroupTask( SAObjectTaskBase ):
 @KnRegisterCommand(
     command     = "netlocalgroup",
     description = "List local groups or list members of a specific local group",
-    group       = "Situational Awareness Commands"
+    group       = "Situational Awareness Commands",
+    platform    = 'Windows'
 )
 class ObjectNetLocalGroupTask( SAObjectTaskBase ):
 
@@ -730,7 +762,8 @@ class ObjectNetLocalGroupTask( SAObjectTaskBase ):
 @KnRegisterCommand(
     command     = "schtasksquery",
     description = "Query a specific scheduled task on the local or target machine",
-    group       = "Situational Awareness Commands"
+    group       = "Situational Awareness Commands",
+    platform    = 'Windows'
 )
 class ObjectSchTasksQueryTask(SAObjectTaskBase):
 
@@ -780,7 +813,8 @@ class ObjectSchTasksQueryTask(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = "schtasksenum",
     description = "Enumerates all scheduled tasks on the local or target machine",
-    group       = "Situational Awareness Commands"
+    group       = "Situational Awareness Commands",
+    platform    = 'Windows'
 )
 class ObjectSchTaskEnumTask(SAObjectTaskBase):
 
@@ -840,9 +874,10 @@ class SAServiceTaskBase(SAObjectTaskBase):
             )
 
 @KnRegisterCommand(
-    command="sc_query",
-    description="Query a service's status",
-    group="Situational Awareness Commands"
+    command     = "sc_query",
+    description = "Query a service's status",
+    group       = "Situational Awareness Commands",
+    platform    = 'Windows'
 )
 class ObjectSCQueryTask(SAServiceTaskBase):
 
@@ -858,9 +893,10 @@ class ObjectSCQueryTask(SAServiceTaskBase):
         return await self.execute_object(argv=argv, description=description)
 
 @KnRegisterCommand(
-    command="sc_qc",
-    description="Query a service's configuration",
-    group="Situational Awareness Commands"
+    command     = "sc_qc",
+    description = "Query a service's configuration",
+    group       = "Situational Awareness Commands",
+    platform    = 'Windows'
 )
 class ObjectSCQCTask(SAServiceTaskBase):
 
@@ -877,9 +913,10 @@ class ObjectSCQCTask(SAServiceTaskBase):
 
 
 @KnRegisterCommand(
-    command="sc_qdescription",
-    description="Query a service's description",
-    group="Situational Awareness Commands"
+    command     = "sc_qdescription",
+    description = "Query a service's description",
+    group       = "Situational Awareness Commands",
+    platform    = 'Windows'
 )
 class ObjectSCQDescriptionTask(SAServiceTaskBase):
 
@@ -895,9 +932,10 @@ class ObjectSCQDescriptionTask(SAServiceTaskBase):
         return await self.execute_object(argv=argv, description=description)
 
 @KnRegisterCommand(
-    command="sc_qfailure",
-    description="List service failure actions",
-    group="Situational Awareness Commands"
+    command     = "sc_qfailure",
+    description = "List service failure actions",
+    group       = "Situational Awareness Commands",
+    platform    = 'Windows'
 )
 class ObjectSCQFailureTask(SAServiceTaskBase):
 
@@ -913,9 +951,10 @@ class ObjectSCQFailureTask(SAServiceTaskBase):
         return await self.execute_object(argv=argv, description=description)
 
 @KnRegisterCommand(
-    command="sc_qtriggerinfo",
-    description="List service triggers",
-    group="Situational Awareness Commands"
+    command     = "sc_qtriggerinfo",
+    description = "List service triggers",
+    group       = "Situational Awareness Commands",
+    platform    = 'Windows'
 )
 class ObjectSCQTriggerInfoTask(SAServiceTaskBase):
 
@@ -931,9 +970,10 @@ class ObjectSCQTriggerInfoTask(SAServiceTaskBase):
         return await self.execute_object(argv=argv, description=description)
 
 @KnRegisterCommand(
-    command="sc_enum",
-    description="Enumerate all service configs in depth",
-    group="Situational Awareness Commands"
+    command     = "sc_enum",
+    description = "Enumerate all service configs in depth",
+    group       = "Situational Awareness Commands",
+    platform    = 'Windows'
 )
 class ObjectSCEnumTask(SAServiceTaskBase):
 
@@ -956,7 +996,8 @@ class ObjectSCEnumTask(SAServiceTaskBase):
 @KnRegisterCommand(
     command     = 'reg_query',
     description = 'query a registry key or value (optionally recursive)',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectRegQueryTask( SAObjectTaskBase ):
 
@@ -1053,7 +1094,8 @@ class ObjectRegQueryTask( SAObjectTaskBase ):
 @KnRegisterCommand(
     command     = 'wmi_query',
     description = 'run a general WMI query on a local or remote system',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectWmiQueryTask( SAObjectTaskBase ):
 
@@ -1175,7 +1217,8 @@ class ObjectWmiQueryTask( SAObjectTaskBase ):
 @KnRegisterCommand(
     command     = 'get-netsession',
     description = 'list sessions on server',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectNetSessionTask(SAObjectTaskBase):
 
@@ -1207,7 +1250,8 @@ class ObjectNetSessionTask(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = 'get-netsession2',
     description = 'list sessions on server. Output is compatible with bofhound',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectNetSession2Task(SAObjectTaskBase):
 
@@ -1262,7 +1306,8 @@ class ObjectNetSession2Task(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = 'enum_filter_driver',
     description = 'Lists filter drivers on the system',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectEnumFilterDriverTask(SAObjectTaskBase):
 
@@ -1298,7 +1343,8 @@ class ObjectEnumFilterDriverTask(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = 'netuptime',
     description = 'Returns information about the boot time on the local (or a remote) machine',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectNetUptimeTask(SAObjectTaskBase):
 
@@ -1331,7 +1377,8 @@ class ObjectNetUptimeTask(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = 'nettime',
     description = 'Returns information about the current time on a remote (or local) machine',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectNetTimeTask(SAObjectTaskBase):
 
@@ -1367,7 +1414,8 @@ class ObjectNetTimeTask(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = 'regsession',
     description = 'Returns users logged on the local (or a remote) machine via the registry - administrative rights needed. Output is compatible with bofhound',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectRegSessionTask(SAObjectTaskBase):
 
@@ -1403,7 +1451,8 @@ class ObjectRegSessionTask(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = 'get_session_info',
     description = 'Returns the auth package, logon server, and current session ID of the user you are operating as',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectGetSessionInfoTask(SAObjectTaskBase):
 
@@ -1428,7 +1477,8 @@ class ObjectGetSessionInfoTask(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = 'sha256',
     description = 'Returns the SHA-256 hash of the selected file for integrity checks',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectSha256Task(SAObjectTaskBase):
 
@@ -1459,7 +1509,8 @@ class ObjectSha256Task(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = 'md5',
     description = 'Returns the md5 hash of the selected file for integrity checks',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectMd5Task(SAObjectTaskBase):
 
@@ -1490,7 +1541,8 @@ class ObjectMd5Task(SAObjectTaskBase):
 @KnRegisterCommand(
     command     = 'windowlist',
     description = 'list visible windows',
-    group       = 'Situational Awareness Commands'
+    group       = 'Situational Awareness Commands',
+    platform    = 'Windows'
 )
 class ObjectWindowListTask( SAObjectTaskBase ):
 
