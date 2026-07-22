@@ -424,7 +424,7 @@ class ObjectProbeTask( SAObjectTaskBase ):
             args.HOST,
             args.PORT,
 
-            description = 'gets a server or DC\'s configured password policy' )
+            description = 'check if a port is open' )
 
 
 @KnRegisterCommand( command     = 'listmods',
